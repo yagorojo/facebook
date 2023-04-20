@@ -1,0 +1,65 @@
+<div class="text-center p-5 bg-white rounded-md shadow-sm">
+  <img class="w-40 h-40 rounded-lg mx-auto border" src="<%= @user.img %>" alt="">
+  <div class="font-bold pt-5 text-3xl"><%= @user.full_name %></div>
+  <div><%= @user.friendships.count %> friends</div>
+  <div>
+    <% if @user == current_user %>
+      <%= link_to "Edit user", edit_user_registration_path, class: "mx-auto w-fit bg-gray-200 hover:bg-gray-400 font-bold mt-2 py-2 px-4 rounded flex items-center" %>
+    <% else %>
+      <% if current_user.request_accepted?(@user) %>
+        <%= button_to "Remove friend", friendship_path(@user), method: :delete %>
+      <% elsif current_user.request_sent?(@user) %>
+        <%= button_to "Cancel request", friendship_path(@user), method: :delete, class: "mx-auto w-fit bg-gray-200 hover:bg-gray-400 font-bold mt-2 py-2 px-4 rounded flex items-center" %>
+      <% elsif current_user.request_received?(@user) %>
+        <div class="flex justify-center items-center gap-2">
+          <%= button_to "Accept", friendship_path(), method: :patch, class: "w-fit bg-green-300 hover:bg-green-400 font-bold mt-2 py-2 px-4 rounded" %>
+          <%= button_to "Reject", friendship_path(@user), method: :delete, class: "w-fit bg-red-300 hover:bg-red-400 font-bold mt-2 py-2 px-4 rounded" %>
+        </div>
+      <% else %>
+        <%= button_to "Add friend", friendships_path, method: :post, params: { id: @user.id }, class: "mx-auto w-fit bg-gray-200 hover:bg-gray-400 font-bold mt-2 py-2 px-4 rounded flex items-center" %>
+      <% end %>
+    <% end %>
+  </div>
+</div>
+
+<div class="container mx-auto flex flex-col items-center">
+  <div class="lg:w-3/5">
+    <% if current_user == @user && current_user.friend_requests.any? %>
+      <div class="p-5 mt-5 bg-white shadow-sm rounded-md">
+        <div class="font-bold text-lg">Pending friend requests:</div>
+        <ul class="my-2 grid grid-cols-4 gap-3 divide-x">
+          <% current_user.friend_requests.each do |friendship| %>
+            <li class="border">
+              <img src="<%= friendship.user.img %>">
+              <%= "#{friendship.user.name} #{friendship.user.surname}" %>
+              <%= button_to "Accept", friendship_path(friendship), method: :patch %>
+              <%= button_to "Reject", friendship_path(friendship.user), method: :delete %>
+            </li>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
+    </div>
+
+  <div class="p-5 mt-3 bg-white shadow-sm rounded-md lg:w-3/5">
+    <div>
+      <span class="text-lg font-bold">Friends </span><%= @user.friendships.where(accepted: "true").count %>
+    </div>
+    <% if @user.friendships.any? %>
+      <div>
+        <% @user.friendships.where(accepted: "true").each do |friend| %>
+          <div class="rounded border">
+            <%= friend.user.name %> <%= friend.user.surname %>
+            <% if @user == current_user %>
+              <%= button_to "Remove friend", friendship_path(friend.user), method: :delete %>
+            <% end %>
+          </div>
+        <% end %>
+      </div>
+    <% end %>
+  </div>
+
+  <div class="lg:w-3/5">
+    <%= render @user.posts %>
+  </div>
+</div>

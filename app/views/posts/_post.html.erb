@@ -1,0 +1,69 @@
+<div id=<%= dom_id post %> class="mx-auto bg-white px-3 pt-3 my-3 rounded-md">
+  <div class="flex justify-between">
+    <div class="flex">
+      <% if post.user.img.nil? %>
+        <div class="relative w-10 h-10 overflow-hidden bg-gray-100 rounded-full dark:bg-gray-600">
+          <svg class="absolute w-12 h-12 text-gray-400 -left-1" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"></path></svg>
+        </div>
+      <% else %>
+        <img src=<%= post.user.img %> class="h-10 w-10 rounded-full">
+      <% end %>
+      <img src="" class="rounded-full" alt="">
+      <div class="ml-3 overflow-hidden">
+        <p class="text-sm font-medium text-slate-900"><%= post.user.name %> <%= post.user.surname %></p>
+        <p class="text-sm text-slate-500 truncate"><%= post.time %></p>
+      </div>
+    </div>
+    <div>
+      <% if current_user.posts.include?(post) %>
+        <%= button_to post_path(post), method: :delete do %>
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" stroke-width="1.5" stroke="#000000" fill="none" stroke-linecap="round" stroke-linejoin="round">
+            <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+            <line x1="18" y1="6" x2="6" y2="18" />
+            <line x1="6" y1="6" x2="18" y2="18" />
+          </svg>
+        <% end %>
+      <% end %>
+    </div>
+  </div>
+  <div class="border-b my-2"></div>
+
+  <%= post.body %>
+
+  <div class="flex justify-between my-2 text-gray-500">
+    <div><%= post.likes.count %> likes</div>
+    <%= link_to "#{post.comments.count} comments", post_path(post) %>
+  </div>
+
+  <div class="border-b"></div>
+  <% like = post.likes.find { |like| like.user.id == current_user.id } %>
+  <div class="flex py-2" id=<%= like %>>
+    <% if like %>
+      <%= button_to post_like_path(post, like), method: "delete", form_class: 'flex-1 flex justify-center rounded', class: 'flex' do %>
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" stroke-width="1.5" stroke="#000000" fill="#000000" stroke-linecap="round" stroke-linejoin="round">
+          <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+          <path d="M19.5 13.572l-7.5 7.428l-7.5 -7.428m0 0a5 5 0 1 1 7.5 -6.566a5 5 0 1 1 7.5 6.572" />
+        </svg>
+        Unlike
+      <% end %>
+    <% else%>
+      <%= button_to post_likes_path(post), method: "post", form_class: 'flex-1 flex justify-center hover:bg-gray-100 p-2 rounded-md', class: 'flex' do %>
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" stroke-width="1.5" stroke="#000000" fill="none" stroke-linecap="round" stroke-linejoin="round">
+          <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+          <path d="M19.5 13.572l-7.5 7.428l-7.5 -7.428m0 0a5 5 0 1 1 7.5 -6.566a5 5 0 1 1 7.5 6.572" />
+        </svg>
+        Like
+      <% end %>
+    <%end%>
+
+    <%= link_to post_path(post), class: "flex-1 flex justify-center hover:bg-gray-100 p-2 rounded-md" do %>
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" stroke-width="1.5" stroke="#000000" fill="none" stroke-linecap="round" stroke-linejoin="round">
+        <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+        <path d="M4 21v-13a3 3 0 0 1 3 -3h10a3 3 0 0 1 3 3v6a3 3 0 0 1 -3 3h-9l-4 4" />
+        <line x1="8" y1="9" x2="16" y2="9" />
+        <line x1="8" y1="13" x2="14" y2="13" />
+      </svg>
+      <div>Comment</div>
+    <% end %>
+  </div>
+</div>

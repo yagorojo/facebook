@@ -1,0 +1,21 @@
+<main class="flex w-100 h-screen flex-col text-center items-center justify-center px-4">
+  <div class="max-w-[400px]">
+    <p class="text-blue-500 text-5xl font-extrabold py-4">Crotbook</p>
+    <p class="text-2xl">Connect with friends and the world around you on Crotbook.</p>
+  </div>
+
+  <div class="container-sm bg-white m-8 p-4 shadow-sm rounded-md w-80">
+    <%= form_for(resource, html: { class: "flex flex-col gap-2" }, as: resource_name, url: registration_path(resource_name)) do |f| %>
+      <%= render "devise/shared/error_messages", resource: resource %>
+      <%= f.text_field :name, placeholder: "First name", class: "border-gray-300 rounded-md w-full p-2.5" %>
+      <%= f.text_field :surname, placeholder: "Last name", class: "border-gray-300 rounded-md w-full p-2.5" %>
+      <%= f.email_field :email, autofocus: true, autocomplete: "email", placeholder: "Email", class: "border-gray-300 rounded-md w-full p-2.5" %>
+      <%= f.password_field :password, autocomplete: "new-password", placeholder: "Password", class: "border-gray-300 rounded-md w-full p-2.5" %>
+      <%= f.submit "Sign up", class: "mx-auto w-fit bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded" %>
+      <div class="h-px bg-gray-200 border-0"></div>
+      <%= link_to "Log in", new_session_path(resource_name), class: "text-sm text-blue-500 hover:text-blue-700" %>
+    <% end %>
+  </div>
+
+  <small>By clicking Sign Up, you agree to our Terms, Privacy Policy and Cookies Policy.</small>
+</main>

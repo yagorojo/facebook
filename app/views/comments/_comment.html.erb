@@ -1,0 +1,12 @@
+<div id=<%= dom_id comment %> class="flex justify-between">
+  <p><strong><%= comment.user.full_name %>:</strong> <%= comment.body %></p>
+  <% if current_user.comments.include?(comment) %>
+    <%= button_to post_comment_path(@post, comment), method: :delete do %>
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" stroke-width="1.5" stroke="#000000" fill="none" stroke-linecap="round" stroke-linejoin="round">
+        <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+        <line x1="18" y1="6" x2="6" y2="18" />
+        <line x1="6" y1="6" x2="18" y2="18" />
+      </svg>
+    <% end %>
+  <% end %>
+</div>

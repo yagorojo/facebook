@@ -1,0 +1,6 @@
+<div class="container mt-6 mx-auto">
+  <div id="posts" class="lg:w-3/5 mx-auto">
+    <%= turbo_frame_tag id="new_post", src: new_post_path %>
+    <%= render @posts, as: :post %>
+  </div>
+</div>

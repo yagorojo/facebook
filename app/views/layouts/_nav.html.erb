@@ -1,0 +1,25 @@
+<% if current_user %>
+  <nav class="flex bg-white w-100 p-3 shadow-sm justify-between items-center">
+    <div class="flex items-center gap-3">
+      <%= link_to "CB", root_path, class: "font-extrabold text-sky-500 text-3xl" %>
+      <%= form_with url: search_path, method: 'get', class: "flex items-center bg-gray-100 rounded-md" do |form| %>
+        <%= form.text_field :search, placeholder: "Search users...", class: "border-0 bg-gray-100 rounded-md" %>
+      <% end %>
+    </div>
+
+    <div data-controller="utils" class="w-10 h-10">
+      <button data-action="click->utils#dropdown">
+        <img src=<%= current_user.img %> class="w-10 h-10 rounded-full">
+      </button>
+
+      <ul data-utils-target="menu" class="hidden bg-white">
+        <li>
+          <%= link_to "Profile", user_path(current_user.id) %>
+        </li>
+        <li>
+          <%= button_to "Log out", destroy_user_session_path , method: "delete" %>
+        </li>
+      </ul>
+    </div>
+  </nav>
+<% end %>

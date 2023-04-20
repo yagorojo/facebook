@@ -1,0 +1,8 @@
+<%= turbo_frame_tag 'new_post' do %>
+  <div class="p-6 mx-auto bg-white rounded-md shadow-sm">
+    <%= form_with model: @post, class: "flex gap-3" do |form| %>
+      <%= form.text_field :body, placeholder: "What are you thinking today?", class: "w-full rounded-md border-gray-300" %>
+      <%= form.submit "Create post", class: "bg-blue-500 font-bold text-white rounded-md p-2 hover:bg-blue-700" %>
+    <% end %>
+  </div>
+<% end %>
